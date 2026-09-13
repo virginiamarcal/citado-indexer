@@ -35,6 +35,15 @@ const SITES: Site[] = [
     indexnowKey: "41e52b1dc6e47bf54bbe129a43897531",
     bingSiteUrl: "https://www.gestaodecmv.com.br",
   },
+  {
+    // Life Estética by Márcia Carneiro (clínica de estética, Palmas-TO).
+    // Site estático em Cloudflare Pages (life-estetica). Canônico = apex.
+    // /indexar rodado 12/09/2026.
+    host: "lifeesteticapalmas.com.br",
+    sitemap: "https://lifeesteticapalmas.com.br/sitemap.xml",
+    indexnowKey: "b0e7946d19c060cb2b7e75b5d9022577",
+    bingSiteUrl: "https://lifeesteticapalmas.com.br",
+  },
 ];
 
 interface SiteResult {
@@ -55,6 +64,12 @@ async function sitemapUrls(site: Site): Promise<string[]> {
 }
 
 async function pingIndexNow(site: Site, urls: string[]): Promise<string> {
+  // NOTA: os endpoints IndexNow da Microsoft (api.indexnow.org e www.bing.com)
+  // limitam (HTTP 429) os IPs de saída COMPARTILHADOS dos Workers da Cloudflare
+  // — verificado 12/09/2026 (do IP local a mesma key retorna 200). Não é erro de
+  // chave nem de hospedagem. O ping é best-effort: a indexação no Bing é garantida
+  // pelo reenvio semanal do sitemap (resubmitBingSitemap, HTTP 200) logo abaixo.
+  // Para IndexNow nativo sem rate-limit, usar Cloudflare Crawler Hints na zona.
   const res = await fetch("https://api.indexnow.org/indexnow", {
     method: "POST",
     headers: { "Content-Type": "application/json; charset=utf-8" },
