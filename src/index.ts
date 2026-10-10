@@ -44,6 +44,14 @@ const SITES: Site[] = [
     indexnowKey: "b0e7946d19c060cb2b7e75b5d9022577",
     bingSiteUrl: "https://lifeesteticapalmas.com.br",
   },
+  {
+    // Buffet Belladata (Palmas-TO). Astro estático em Cloudflare Pages (belladata).
+    // Canônico = apex (www→apex 301). /indexar rodado 10/10/2026.
+    host: "belladata.com.br",
+    sitemap: "https://belladata.com.br/sitemap-index.xml",
+    indexnowKey: "d882d36dcac1c771be5546f6b54e8870",
+    bingSiteUrl: "https://belladata.com.br",
+  },
 ];
 
 interface SiteResult {
@@ -54,11 +62,22 @@ interface SiteResult {
   erro: string | null;
 }
 
-async function sitemapUrls(site: Site): Promise<string[]> {
-  const res = await fetch(site.sitemap, { redirect: "follow" });
+async function lerLocs(url: string): Promise<{ indice: boolean; locs: string[] }> {
+  const res = await fetch(url, { redirect: "follow" });
   if (!res.ok) throw new Error(`sitemap HTTP ${res.status}`);
   const xml = await res.text();
-  const urls = [...xml.matchAll(/<loc>\s*(.*?)\s*<\/loc>/g)].map((m) => m[1]);
+  const locs = [...xml.matchAll(/<loc>\s*(.*?)\s*<\/loc>/g)].map((m) => m[1]);
+  return { indice: /<sitemapindex[\s>]/.test(xml), locs };
+}
+
+async function sitemapUrls(site: Site): Promise<string[]> {
+  // Aceita sitemap simples ou índice de sitemaps (padrão do Astro: sitemap-index.xml → sitemap-0.xml)
+  const raiz = await lerLocs(site.sitemap);
+  let urls = raiz.locs;
+  if (raiz.indice) {
+    urls = [];
+    for (const filho of raiz.locs) urls.push(...(await lerLocs(filho)).locs);
+  }
   if (!urls.length) throw new Error("sitemap sem <loc>");
   return urls;
 }
@@ -96,6 +115,7 @@ async function resubmitBingSitemap(env: Env, site: Site): Promise<string> {
       body: JSON.stringify({ siteUrl: site.bingSiteUrl, feedUrl: site.sitemap }),
     },
   );
+  if (!res.ok) return `HTTP ${res.status}: ${(await res.text()).slice(0, 200)}`;
   return `HTTP ${res.status}`;
 }
 
