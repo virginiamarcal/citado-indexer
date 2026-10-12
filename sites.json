@@ -1,0 +1,32 @@
+[
+  {
+    "host": "citado.app.br",
+    "sitemap": "https://citado.app.br/sitemap.xml",
+    "indexnowKey": "fdede43aa2d7d414bc65b927ab0ef196",
+    "bingSiteUrl": "https://citado.app.br"
+  },
+  {
+    "host": "www.gestaodecmv.com.br",
+    "sitemap": "https://www.gestaodecmv.com.br/sitemap.xml",
+    "indexnowKey": "41e52b1dc6e47bf54bbe129a43897531",
+    "bingSiteUrl": "https://www.gestaodecmv.com.br"
+  },
+  {
+    "host": "lifeesteticapalmas.com.br",
+    "sitemap": "https://lifeesteticapalmas.com.br/sitemap.xml",
+    "indexnowKey": "b0e7946d19c060cb2b7e75b5d9022577",
+    "bingSiteUrl": "https://lifeesteticapalmas.com.br"
+  },
+  {
+    "host": "belladata.com.br",
+    "sitemap": "https://belladata.com.br/sitemap-index.xml",
+    "indexnowKey": "d882d36dcac1c771be5546f6b54e8870",
+    "bingSiteUrl": "https://belladata.com.br"
+  },
+  {
+    "host": "oficina306.com.br",
+    "sitemap": "https://oficina306.com.br/sitemap.xml",
+    "indexnowKey": "d054d0b9d6f95de8f32d6f3dcf718b79",
+    "bingSiteUrl": "https://oficina306.com.br"
+  }
+]

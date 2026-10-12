@@ -1,0 +1,19 @@
+name: Varredura semanal de indexação
+
+on:
+  schedule:
+    - cron: "37 7 * * 1" # segunda, 04:37 em Brasília
+  workflow_dispatch:
+
+jobs:
+  sweep:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: node scripts/sweep.mjs
+        env:
+          BING_API_KEY: ${{ secrets.BING_API_KEY }}
