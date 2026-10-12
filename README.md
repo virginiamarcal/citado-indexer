@@ -118,3 +118,7 @@ Guia de GEO em português: [citado.app.br/geo](https://citado.app.br/geo)
 ## Licença
 
 [MIT](LICENSE) — use, adapte, embuta nos seus sites. Se ele te ajudar, um link para [citado.app.br](https://citado.app.br) é sempre bem-vindo.
+
+## Onde a varredura roda (desde 12/10/2026)
+
+A Microsoft limita os IPs de saída compartilhados dos Workers da Cloudflare (Bing `400 ThrottleIP` e IndexNow `429`). Por isso a varredura semanal roda no **GitHub Actions** (`.github/workflows/sweep.yml` → `scripts/sweep.mjs`, segunda 04:37 de Brasília), com a chave do Bing no secret `BING_API_KEY`. A lista de sites fica em `sites.json`, compartilhada com o Worker, que agora serve só o disparo manual `/run`. Para incluir um site: adicionar em `sites.json` e dar push. Para rodar na hora: aba Actions → "Run workflow".

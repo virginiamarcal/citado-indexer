@@ -9,7 +9,7 @@ workers_dev = true
 
 # segunda 07:30 UTC = 04:30 em Brasília
 [triggers]
-crons = ["30 7 * * 1"]
+crons = []
 
 # Secrets (nunca aqui):
 #   npx wrangler secret put BING_API_KEY   # reenvio de sitemap ao Bing

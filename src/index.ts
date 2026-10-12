@@ -18,41 +18,9 @@ interface Site {
   bingSiteUrl?: string; // como o site foi registrado no Bing Webmaster
 }
 
-// Sites Worker (oficina306 etc.) têm motor próprio embutido — não listar aqui.
-const SITES: Site[] = [
-  {
-    host: "citado.app.br",
-    sitemap: "https://citado.app.br/sitemap.xml",
-    indexnowKey: "fdede43aa2d7d414bc65b927ab0ef196",
-    bingSiteUrl: "https://citado.app.br",
-  },
-  {
-    // Gestão de CMV (site próprio, Vercel). Canônico = www (apex→www 308).
-    // /indexar rodado 13/07/2026. Domínio antigo gestaodecomanda.com.br
-    // sai de circulação após redirect 301 (manual na Vercel).
-    host: "www.gestaodecmv.com.br",
-    sitemap: "https://www.gestaodecmv.com.br/sitemap.xml",
-    indexnowKey: "41e52b1dc6e47bf54bbe129a43897531",
-    bingSiteUrl: "https://www.gestaodecmv.com.br",
-  },
-  {
-    // Life Estética by Márcia Carneiro (clínica de estética, Palmas-TO).
-    // Site estático em Cloudflare Pages (life-estetica). Canônico = apex.
-    // /indexar rodado 12/09/2026.
-    host: "lifeesteticapalmas.com.br",
-    sitemap: "https://lifeesteticapalmas.com.br/sitemap.xml",
-    indexnowKey: "b0e7946d19c060cb2b7e75b5d9022577",
-    bingSiteUrl: "https://lifeesteticapalmas.com.br",
-  },
-  {
-    // Buffet Belladata (Palmas-TO). Astro estático em Cloudflare Pages (belladata).
-    // Canônico = apex (www→apex 301). /indexar rodado 10/10/2026.
-    host: "belladata.com.br",
-    sitemap: "https://belladata.com.br/sitemap-index.xml",
-    indexnowKey: "d882d36dcac1c771be5546f6b54e8870",
-    bingSiteUrl: "https://belladata.com.br",
-  },
-];
+// Lista única de sites: sites.json (lida também pelo GitHub Actions, que faz a varredura semanal).
+import SITES_JSON from "../sites.json";
+const SITES: Site[] = SITES_JSON;
 
 interface SiteResult {
   host: string;
@@ -166,7 +134,7 @@ export default {
       return Response.json({ ok: true, quando: new Date().toISOString(), resultados });
     }
     return new Response(
-      `citado-indexer central — ${SITES.length} site(s) na varredura semanal (segunda 04:30 Brasília)\n`,
+      `citado-indexer central — ${SITES.length} site(s) na varredura semanal (varredura semanal no GitHub Actions; aqui só o disparo manual /run)\n`,
       { headers: { "Content-Type": "text/plain; charset=utf-8" } },
     );
   },
